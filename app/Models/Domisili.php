@@ -17,6 +17,6 @@ class Domisili extends Model
 
     public function users(): HasMany
     {
-        return $this->hasMany(User::class, 'domisilis_id');
+        return $this->hasMany(User::class, 'users_id');
     }
 }

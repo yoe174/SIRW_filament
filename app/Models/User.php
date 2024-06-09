@@ -17,12 +17,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
         // Filter warga berdasarkan roles user
-    protected static function booted()
-    {
-        parent::booted();
+    // protected static function booted()
+    // {
+    //     parent::booted();
 
-        static::addGlobalScope(new RTScope);
-    }
+    //     static::addGlobalScope(new RTScope);
+    // }
 
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
 

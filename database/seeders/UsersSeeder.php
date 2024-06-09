@@ -27,6 +27,7 @@ class UsersSeeder extends Seeder
                 'no_KK' => '3201060401123456',
                 'NIK' => '12345678912385',
                 'jenis_kelamin' => 'laki-laki',
+                
                 'tempat_lahir' => 'Malang',
                 'agama' => 'islam',
                 'pendidikan' => 'sma',
