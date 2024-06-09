@@ -43,7 +43,7 @@ class AduanResource extends Resource
                         TextInput::make('nama_pengadu')->required(),
                         TextInput::make('aduan')->required(),
                         RichEditor::make('isi_aduan')->required(),
-                        FileUpload::make('bukti')->required()->directory('aduans_image')->visibility('public'), 
+                        FileUpload::make('bukti')->required()->directory('aduans_image')->visibility('public'),
                     ])
             ]);
     }
@@ -73,14 +73,14 @@ class AduanResource extends Resource
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -88,5 +88,5 @@ class AduanResource extends Resource
             'create' => Pages\CreateAduan::route('/create'),
             'edit' => Pages\EditAduan::route('/{record}/edit'),
         ];
-    }    
+    }
 }

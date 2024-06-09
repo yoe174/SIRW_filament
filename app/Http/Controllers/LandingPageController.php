@@ -9,6 +9,7 @@ class LandingPageController extends Controller
 {
     public function store(Request $request)
     {
+
         // Validate the incoming request data
         $validatedData = $request->validate([
             'nama_pengadu' => 'required|string|max:255',
@@ -27,6 +28,7 @@ class LandingPageController extends Controller
         $aduan = new Aduan();
         $aduan->fill($validatedData);
         $aduan->save();
+
 
         // Redirect back or to a specific route
         return redirect()->route('index')->with('success', 'Pengaduan berhasil diajukan.');

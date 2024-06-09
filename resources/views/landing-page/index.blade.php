@@ -13,7 +13,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
     </script>
-
+    <title>Landing Page </title>
+    <link rel="icon" href="img/Logo.png">
     <style>
         /* Custom CSS for background colors */
         body {
@@ -72,7 +73,7 @@
                 </li>
             </ul>
             <span class="navbar-text">
-                <a href="{{ url('/admin/login')}}" class="btn" role="button"
+                <a href="/admin/login" class="btn" role="button"
                     style="color:white; background-color: rgba(245,158,11,255)">Login</a>
             </span>
         </div>
@@ -131,14 +132,13 @@
     </div>
     {{-- jumbotron --}}
     <div class="jumbotron jumbotron-fluid"
-        style="background-image: url('{{ asset('storage/bromo2.jpg') }}'); background-size: cover; background-position: center;">
+        style="background-image: url('{{ asset('img/bromo2.png') }}'); background-size: cover; background-position: center;">
         <div class="container">
             <h1 class="display-3" style="color: white">Kami Ada Untuk Melayani Yang Terbaik Untuk Masyarakat</h1>
             <p class="lead" style="color: white">RW O2 Desa Bunder</p>
         </div>
     </div>
-
-
+    </div>
     {{-- informasi --}}
     <h1 style="text-align: center; font-family: Arial, sans-serif; font-size: 36px; color: #333; text-shadow: 2px 2px 2px #ccc; margin-top: 50px;"
         id="informasi">INFORMASI</h1>
@@ -328,10 +328,9 @@
                         <div class="table-responsive">
                             <div class="container mt-5">
                                 <h2>Form Pengajuan Surat</h2>
-                                <form action="/create/surat" method="POST" enctype="multipart/form-data"
-                                    class="needs-validation" novalidate>
+                                <form id="suratForm" enctype="multipart/form-data" class="needs-validation"
+                                    novalidate>
                                     @csrf
-
                                     <div class="form-group">
                                         <label for="nama_pengaju">Nama Lengkap</label>
                                         <input type="text" class="form-control" id="nama_pengaju"
@@ -354,7 +353,6 @@
                                         <input type="date" class="form-control" id="tgl_lahir" name="tgl_lahir"
                                             required>
                                     </div>
-
                                     <div class="form-group">
                                         <label for="pekerjaan">Pekerjaan</label>
                                         <input type="text" class="form-control" id="pekerjaan" name="pekerjaan"
@@ -376,8 +374,7 @@
                                         <label for="keperluan">Keperluan</label>
                                         <textarea class="form-control" id="keperluan" name="keperluan" rows="5" required></textarea>
                                     </div>
-                                    <button type="submit" id="submitButton" class="btn btn-primary"
-                                        disabled>Submit</button>
+                                    <button type="button" id="submitButton" class="btn btn-primary">Submit</button>
                                 </form>
                             </div>
                         </div>
@@ -390,37 +387,6 @@
         </div>
     </div>
     <BR></BR>
-    <h1 style="text-align: center; font-family: Arial, sans-serif; font-size: 36px; color: #333; text-shadow: 2px 2px 2px #ccc; margin-top: 50px;"
-        id="surat">DAFTAR PENGAJUAN SURAT</h1>
-    <br><br>
-    <div class="container container-fluid">
-        <div class="table-responsive">
-            <table class="table table-striped table-bordered">
-                <thead>
-                    <tr>
-                        <th>Nama</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($surats as $surat)
-                        <tr>
-                            <td>{{ $surat->nama_pengaju }}</td>
-                            <td>
-                                <a href="{{ route('generate.pdf', ['id' => $surat->id]) }}" class="btn btn-success">
-                                    Download
-                                </a>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-        <!-- Pagination Links -->
-        <div class="d-flex justify-content-center">
-            {{ $surats->onEachSide(1)->fragment('surat')->links('vendor.pagination.bootstrap-4') }}
-        </div>
-    </div>
 
     {{-- footer --}}
     <footer class="footer bg-light mt-auto py-3">
@@ -520,6 +486,54 @@
                     'static'); // Atur posisi footer ke statis untuk mengikuti ke bawah
                 $(this).text('Tutup');
             }
+        });
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+        const submitButton = document.getElementById('submitButton');
+        const suratForm = document.getElementById('suratForm');
+
+        submitButton.disabled = false;
+
+        submitButton.addEventListener('click', function() {
+            let formData = new FormData(suratForm);
+
+            fetch('/create/surat', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        fetch(`/surat/generate-pdf/${data.id}`)
+                            .then(pdfResponse => {
+                                if (pdfResponse.ok) {
+                                    return pdfResponse.blob();
+                                } else {
+                                    throw new Error('Failed to generate PDF');
+                                }
+                            })
+                            .then(blob => {
+                                const url = window.URL.createObjectURL(blob);
+                                const a = document.createElement('a');
+                                a.style.display = 'none';
+                                a.href = url;
+                                a.download = 'surat_pengajuan.pdf';
+                                document.body.appendChild(a);
+                                a.click();
+                                window.URL.revokeObjectURL(url);
+                                // Redirect to index page after download
+                                window.location.href = '/';
+                            })
+                            .catch(error => console.error('PDF Generation Error:', error));
+                    } else {
+                        // Handle validation errors or other errors
+                        console.log(data.errors);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
         });
     });
 </script>
