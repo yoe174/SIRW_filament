@@ -132,7 +132,7 @@
     </div>
     {{-- jumbotron --}}
     <div class="jumbotron jumbotron-fluid"
-        style="background-image: url('{{ asset('img/bromo2.png') }}'); background-size: cover; background-position: center;">
+        style="background-image: url('{{ asset('img/bromo2.jpg') }}'); background-size: cover; background-position: center;">
         <div class="container">
             <h1 class="display-3" style="color: white">Kami Ada Untuk Melayani Yang Terbaik Untuk Masyarakat</h1>
             <p class="lead" style="color: white">RW O2 Desa Bunder</p>
@@ -160,7 +160,7 @@
                             <button type="button" class="btn btn-primary" data-toggle="collapse"
                                 data-target="#multiCollapseExample{{ $information->id }}" aria-expanded="false"
                                 aria-controls="multiCollapseExample{{ $information->id }}">
-                                Baca Lebih Lanjut
+                                Selengkapnya
                             </button>
                         </div>
                     </div>
@@ -168,39 +168,47 @@
             @endforeach
         </div>
     </div>
+    <br>
     {{-- kegiatan --}}
     <h1 style="text-align: center; font-family: Arial, sans-serif; font-size: 36px; color: #333; text-shadow: 2px 2px 2px #ccc; margin-top: 50px;"
-        id="kegiatan">KEGIATAN</h1>
-    <br><br>
-    <div class="container-fluid" style="padding: 50px;">
-        <div class="row" style="display: flex; flex-wrap: wrap; justify-content: flex-start; border: 1px">
-            @foreach ($kegiatans as $kegiatan)
-                <div class="col-md-3">
-                    <div class="card mb-4 my-card">
-                        <div class="card-header">
-                            <h5 class="card-title">{{ $kegiatan->kegiatan }}</h5>
-                        </div>
-                        <div class="card-body">
-                            <p class="card-text">Waktu: {{ $kegiatan->waktu }}</p>
-                            <p class="card-text">Lokasi: {{ $kegiatan->lokasi }}</p>
-                            <p class="card-text">Peserta: {{ $kegiatan->peserta }}</p>
-                            <div class="card-text collapse multi-collapse"
-                                id="multiCollapseExample{{ $kegiatan->id }}">
-                                {!! $kegiatan->agenda !!}
-                            </div>
-                            <button type="button" class="btn btn-primary" data-toggle="collapse"
-                                data-target="#multiCollapseExample{{ $kegiatan->id }}" aria-expanded="false"
-                                aria-controls="multiCollapseExample{{ $kegiatan->id }}">Baca Lebih Lanjut
-                            </button>
-                        </div>
-                    </div>
+        id="kegiatan">KEGIATAN WARGA</h1>
+    <br>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <h3 class="text-center">Kegiatan Warga</h3>
+                <div class="table-responsive">
+                    <table class="table table-sm" style="font-size: 16px; margin: auto;">
+                        <thead>
+                            <tr>
+                                <th style="width: 20%;">Kegiatan</th>
+                                <th style="width: 15%;">Waktu</th>
+                                <th style="width: 15%;">Lokasi</th>
+                                <th style="width: 15%;">Peserta</th>
+                                <th style="width: 35%;">Agenda</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($kegiatans as $kegiatan)
+                                <tr>
+                                    <td>{{ $kegiatan->kegiatan }}</td>
+                                    <td>{{ $kegiatan->waktu }}</td>
+                                    <td>{{ $kegiatan->lokasi }}</td>
+                                    <td>{{ $kegiatan->peserta }}</td>
+                                    <td>{!! $kegiatan->agenda !!}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
-            @endforeach
+            </div>
         </div>
     </div>
 
 
     <br>
+
+
     {{-- modal struktur organisasi --}}
     <div class="modal fade" id="StrukturModal" tabindex="-1" role="dialog" aria-labelledby="StrukturModalLabel"
         aria-hidden="true">

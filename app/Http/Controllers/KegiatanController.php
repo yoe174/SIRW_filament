@@ -9,7 +9,7 @@ class KegiatanController extends Controller
 {
     public function index()
     {
-        $kegiatans = Kegiatan::all();
+        $kegiatans = Kegiatan::paginate(10);
         return view('landing-page.index', compact('kegiatans'));
     }
 }
