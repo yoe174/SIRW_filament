@@ -60,7 +60,7 @@ class SuratResource extends Resource
                 TextColumn::make('pekerjaan')->label('Pekerjaan'),
                 TextColumn::make('status')->label('Status'),
                 TextColumn::make('alamat')->label('Alamat'),
-                TextColumn::make('keperluan')->label('Keperluan')
+                TextColumn::make('keperluan')->label('Keperluan'),
 
             ])
             ->filters([

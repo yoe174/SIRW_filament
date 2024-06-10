@@ -9,11 +9,12 @@ use Filament\Resources\Pages\EditRecord;
 class EditSurat extends EditRecord
 {
     protected static string $resource = SuratResource::class;
-
+    protected static ?string $title = 'Edit  Surat ';
     protected function getActions(): array
     {
         return [
             Actions\DeleteAction::make()
+
         ];
     }
 }
